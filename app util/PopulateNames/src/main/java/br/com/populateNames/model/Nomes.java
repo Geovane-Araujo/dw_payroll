@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("nomes_variados")
+@TableName("person")
 public class Nomes {
 
     @Id
