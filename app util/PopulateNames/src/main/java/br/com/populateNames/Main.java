@@ -18,7 +18,7 @@ public class Main {
 
     public static final String DIR_JSON = "/home/geovane/Documentos/Workspace/Back-end/JAva/dw_payroll/dados_brutos/candidatos";
     static NomesService nomesService = new NomesService();
-
+    static Random random = new Random();
 
 
     public static void main(String[] args){
@@ -46,15 +46,16 @@ public class Main {
         for(Map obj: jsonCarregados){
             String[] nomeSplit = obj.get("nomeCompleto").toString().split(" ");
             String primeiroNome = nomeSplit[0];
+            String sql = "INSERT INTO person_salary(nome,current_value) VALUES";
 
             for(Map objSob: jsonCarregados){
-                Nomes nomes = new Nomes();
                 String[] sobrenomeSplit = objSob.get("nomeCompleto").toString().split(" ");
                 primeiroNome = nomeSplit[0] + formaSobrenome(sobrenomeSplit);
-
-                nomes.setNome(primeiroNome);
-                nomesService.save(nomes);
+                double rn = Math.random() * (10000.00 - 1212.00) + 1212.00;
+                sql += " ('"+primeiroNome+"',"+rn+"),";
             }
+            sql = sql.substring(0,sql.length() - 1) + ";";
+            nomesService.executeQuery(sql);
         }
 
     }
@@ -74,11 +75,11 @@ public class Main {
     static String formaSobrenome(String[] sobrenomes){
 
         String sobrenome = "";
-        Random random = new Random();
+
 
         for (int i = 1;i < sobrenomes.length;i++){
             int rn = random.nextInt((sobrenomes.length - 1)) + 1;
-            sobrenome += " " + sobrenomes[rn];
+            sobrenome += " " + sobrenomes[rn].replace("'"," ");
         }
         return sobrenome;
     }
